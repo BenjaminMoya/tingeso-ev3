@@ -8,6 +8,12 @@ import MenuItem from "@mui/material/MenuItem";
 import AccountBalance from '@mui/icons-material/AccountBalance';
 import creditService from "../services/credit.service";
 import fileService from "../services/file.service";
+import Typography from "@mui/material/Typography";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
 const CreditApplication = () => {
 
@@ -24,6 +30,7 @@ const CreditApplication = () => {
   const [selectedFile2, setSelectedFile2] = useState(null);
   const [selectedFile3, setSelectedFile3] = useState(null);
   const [selectedFile4, setSelectedFile4] = useState(null);
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleFileChange1 = (event) => {
@@ -52,6 +59,21 @@ const CreditApplication = () => {
     setCreditUserId(JSON.parse(sessionStorage.getItem("userId")));
   };
 
+  const handleClickOpen = () => {
+    setOpen(true); 
+  };
+
+  const handleCancel = () => {
+    setOpen(false); 
+    console.log("Acción cancelada");
+  };
+
+  const handleConfirm = (e) => {
+    saveCredit(e);
+    setOpen(false); 
+    console.log("Acción confirmada");
+  };
+
   useEffect(() => {
     updateUserId();
   }, []);
@@ -74,34 +96,19 @@ const CreditApplication = () => {
       return;
     }
 
-    if (selectedFile1 || selectedFile2 ||selectedFile3 || selectedFile4) {
-      const fileType = selectedFile1.type;
-      if (fileType !== "application/pdf") {
-        alert("Por favor, sube un archivo en formato PDF.");
-        return; 
-      }
-    }
-    const fileType1 = selectedFile1.type;
-    const fileType2 = selectedFile2.type;
-    const fileType3 = selectedFile3.type;
-    if (fileType1 !== "application/pdf" || fileType2 !== "application/pdf" || fileType3 !== "application/pdf") {
-      alert("Por favor, sube un archivo en formato PDF.");
-      return; 
-    }
-
     if(creditType == 1 && selectedFile1 && selectedFile2 && selectedFile3){
       setMaxAmount(creditRequestedAmount*0,8);
     } else if(creditType == 2 && selectedFile1 && selectedFile2 && selectedFile3 && selectedFile4){
       const fileType4 = selectedFile4.type;
       if (fileType4 !== "application/pdf") {
-        alert("Por favor, sube un archivo en formato PDF.");
+        alert("Por favor, suba un archivo en formato PDF.");
         return;
       }
       setMaxAmount(creditRequestedAmount*0,7);
     } else if(creditType == 3 && selectedFile1 && selectedFile2 && selectedFile3 && selectedFile4){
       const fileType4 = selectedFile4.type;
       if (fileType4 !== "application/pdf") {
-        alert("Por favor, sube un archivo en formato PDF.");
+        alert("Por favor, suba un archivo en formato PDF.");
         return;
       }
       setMaxAmount(creditRequestedAmount*0,6);
@@ -116,6 +123,32 @@ const CreditApplication = () => {
     const credit = { creditUserId, creditPropertyAmount, creditRequestedAmount, creditPhase, creditTerm, creditFinishDate, creditType, latePayment, maxAmount };
     console.log("Datos del credito:", credit);
     if (creditUserId) {
+      if(selectedFile1 == null || selectedFile2 == null || selectedFile3 == null){
+        alert("Faltan archivos por adjuntar.");
+        return;
+      }
+      const fileType1 = selectedFile1.type;
+      const fileType2 = selectedFile2.type;
+      const fileType3 = selectedFile3.type;
+      if (fileType1 !== "application/pdf") {
+        alert("El archivo 1 no esta en formato PDF.");
+        return; 
+      }
+      if (fileType2 !== "application/pdf") {
+        alert("El archivo 2 no esta en formato PDF.");
+        return; 
+      }
+      if (fileType3 !== "application/pdf") {
+        alert("El archivo 3 no esta en formato PDF.");
+        return; 
+      }
+      if(creditType == 2 || creditType == 3){
+        const fileType4 = selectedFile4.type;
+        if (fileType4 !== "application/pdf") {
+          alert("El archivo 4 no esta en formato PDF.");
+          return; 
+        }
+      }
       creditService
       .create(credit)
       .then((response) => {
@@ -134,9 +167,13 @@ const CreditApplication = () => {
               .upload(creditId,3,selectedFile3)
               .then((response) => {
                 console.log("Archivo 3 subido: ", response.data);
+                alert("Credito solicitado con exito.");
                 navigate("/user/credits");
               })
               .catch((error) => {
+                if(error.message.includes("500") || error.message.includes("403")){
+                alert("El servidor no se encuentra disponible. Contacte a soporte tecnico");
+            }
                 console.log(
                   "Ha ocurrido un error al subir el archivo 3.",
                   error
@@ -144,6 +181,9 @@ const CreditApplication = () => {
               });
             })
             .catch((error) => {
+              if(error.message.includes("500") || error.message.includes("403")){
+                alert("El servidor no se encuentra disponible. Contacte a soporte tecnico");
+            }
               console.log(
                 "Ha ocurrido un error al subir el archivo 2.",
                 error
@@ -151,6 +191,9 @@ const CreditApplication = () => {
             });
           })
           .catch((error) => {
+            if(error.message.includes("500") || error.message.includes("403")){
+                alert("El servidor no se encuentra disponible. Contacte a soporte tecnico");
+            }
             console.log(
               "Ha ocurrido un error al subir el archivo 1.",
               error
@@ -173,9 +216,13 @@ const CreditApplication = () => {
                 .upload(creditId,3,selectedFile3)
                 .then((response) => {
                   console.log("Archivo 3 subido: ", response.data);
+                  alert("Credito solicitado con exito.");
                   navigate("/user/credits");
                 })
                 .catch((error) => {
+                  if(error.message.includes("500") || error.message.includes("403")){
+                alert("El servidor no se encuentra disponible. Contacte a soporte tecnico");
+            }
                   console.log(
                     "Ha ocurrido un error al subir el archivo 3.",
                     error
@@ -183,6 +230,9 @@ const CreditApplication = () => {
                 });  
               })
               .catch((error) => {
+                if(error.message.includes("500") || error.message.includes("403")){
+                alert("El servidor no se encuentra disponible. Contacte a soporte tecnico");
+            }
                 console.log(
                   "Ha ocurrido un error al subir el archivo 3.",
                   error
@@ -190,6 +240,9 @@ const CreditApplication = () => {
               });
             })
             .catch((error) => {
+              if(error.message.includes("500") || error.message.includes("403")){
+                alert("El servidor no se encuentra disponible. Contacte a soporte tecnico");
+            }
               console.log(
                 "Ha ocurrido un error al subir el archivo 2.",
                 error
@@ -197,6 +250,9 @@ const CreditApplication = () => {
             });
           })
           .catch((error) => {
+            if(error.message.includes("500") || error.message.includes("403")){
+                alert("El servidor no se encuentra disponible. Contacte a soporte tecnico");
+            }
             console.log(
               "Ha ocurrido un error al subir el archivo 1.",
               error
@@ -219,9 +275,13 @@ const CreditApplication = () => {
                 .upload(creditId,6,selectedFile3)
                 .then((response) => {
                   console.log("Archivo 3 subido: ", response.data);
+                  alert("Credito solicitado con exito.");
                   navigate("/user/credits");
                 })
                 .catch((error) => {
+                  if(error.message.includes("500") || error.message.includes("403")){
+                alert("El servidor no se encuentra disponible. Contacte a soporte tecnico");
+            }
                   console.log(
                     "Ha ocurrido un error al subir el archivo 3.",
                     error
@@ -229,6 +289,9 @@ const CreditApplication = () => {
                 });  
               })
               .catch((error) => {
+                if(error.message.includes("500") || error.message.includes("403")){
+                alert("El servidor no se encuentra disponible. Contacte a soporte tecnico");
+            }
                 console.log(
                   "Ha ocurrido un error al subir el archivo 3.",
                   error
@@ -236,6 +299,9 @@ const CreditApplication = () => {
               });
             })
             .catch((error) => {
+              if(error.message.includes("500") || error.message.includes("403")){
+                alert("El servidor no se encuentra disponible. Contacte a soporte tecnico");
+            }
               console.log(
                 "Ha ocurrido un error al subir el archivo 2.",
                 error
@@ -243,6 +309,9 @@ const CreditApplication = () => {
             });
           })
           .catch((error) => {
+            if(error.message.includes("500") || error.message.includes("403")){
+                alert("El servidor no se encuentra disponible. Contacte a soporte tecnico");
+            }
             console.log(
               "Ha ocurrido un error al subir el archivo 1.",
               error
@@ -261,9 +330,13 @@ const CreditApplication = () => {
               .upload(creditId,8,selectedFile3)
               .then((response) => {
                 console.log("Archivo 3 subido: ", response.data);
+                alert("Credito solicitado con exito.");
                 navigate("/user/credits");
               })
               .catch((error) => {
+                if(error.message.includes("500") || error.message.includes("403")){
+                alert("El servidor no se encuentra disponible. Contacte a soporte tecnico");
+            }
                 console.log(
                   "Ha ocurrido un error al subir el archivo 3.",
                   error
@@ -271,6 +344,9 @@ const CreditApplication = () => {
               });
             })
             .catch((error) => {
+              if(error.message.includes("500") || error.message.includes("403")){
+                alert("El servidor no se encuentra disponible. Contacte a soporte tecnico");
+            }
               console.log(
                 "Ha ocurrido un error al subir el archivo 2.",
                 error
@@ -278,6 +354,9 @@ const CreditApplication = () => {
             });
           })
           .catch((error) => {
+            if(error.message.includes("500") || error.message.includes("403")){
+                alert("El servidor no se encuentra disponible. Contacte a soporte tecnico");
+            }
             console.log(
               "Ha ocurrido un error al subir el archivo 1.",
               error
@@ -286,6 +365,9 @@ const CreditApplication = () => {
         }
       })
       .catch((error) => {
+        if(error.message.includes("500") || error.message.includes("403")){
+                alert("El servidor no se encuentra disponible. Contacte a soporte tecnico");
+            }
         console.log(
           "Ha ocurrido un error al solicitar el credito.",
           error
@@ -305,7 +387,14 @@ const CreditApplication = () => {
               variant="contained" 
               component="label"
               size="small"
-              style={{ margin: '8px 0', width: '200px' }} 
+              sx={{
+                marginTop: "1rem",
+                marginLeft: "0.5rem",
+                backgroundColor: "#215a6d",
+                "&:hover": {
+                  backgroundColor: "#173d4d", 
+                },
+              }}
             >
               Comprobante de ingresos
             <input
@@ -323,7 +412,14 @@ const CreditApplication = () => {
               variant="contained" 
               component="label"
               size="small"
-              style={{ margin: '8px 0', width: '200px' }} 
+              sx={{
+              marginTop: "1rem",
+              marginLeft: "0.5rem",
+              backgroundColor: "#215a6d",
+              "&:hover": {
+                backgroundColor: "#173d4d", 
+              },
+            }} 
             >
               Certificado de avalúo
             <input
@@ -341,7 +437,14 @@ const CreditApplication = () => {
               variant="contained" 
               component="label"
               size="small"
-              style={{ margin: '8px 0', width: '200px' }} 
+              sx={{
+              marginTop: "1rem",
+              marginLeft: "0.5rem",
+              backgroundColor: "#215a6d",
+              "&:hover": {
+                backgroundColor: "#173d4d", 
+              },
+            }} 
             >
               Historial crediticio
             <input
@@ -363,7 +466,14 @@ const CreditApplication = () => {
               variant="contained" 
               component="label"
               size="small"
-              style={{ margin: '8px 0', width: '200px' }} 
+              sx={{
+              marginTop: "1rem",
+              marginLeft: "0.5rem",
+              backgroundColor: "#215a6d",
+              "&:hover": {
+                backgroundColor: "#173d4d", 
+              },
+            }} 
             >
               Comprobante de ingresos
             <input
@@ -381,7 +491,14 @@ const CreditApplication = () => {
               variant="contained" 
               component="label"
               size="small"
-              style={{ margin: '8px 0', width: '200px' }} 
+              sx={{
+              marginTop: "1rem",
+              marginLeft: "0.5rem",
+              backgroundColor: "#215a6d",
+              "&:hover": {
+                backgroundColor: "#173d4d", 
+              },
+            }} 
             >
               Certificado de avalúo
             <input
@@ -399,7 +516,14 @@ const CreditApplication = () => {
               variant="contained" 
               component="label"
               size="small"
-              style={{ margin: '8px 0', width: '200px' }} 
+              sx={{
+              marginTop: "1rem",
+              marginLeft: "0.5rem",
+              backgroundColor: "#215a6d",
+              "&:hover": {
+                backgroundColor: "#173d4d", 
+              },
+            }} 
             >
               Escritura de la primera vivienda
             <input
@@ -417,7 +541,14 @@ const CreditApplication = () => {
               variant="contained" 
               component="label"
               size="small"
-              style={{ margin: '8px 0', width: '200px' }} 
+              sx={{
+              marginTop: "1rem",
+              marginLeft: "0.5rem",
+              backgroundColor: "#215a6d",
+              "&:hover": {
+                backgroundColor: "#173d4d", 
+              },
+            }} 
             >
               Historial crediticio
             <input
@@ -439,7 +570,14 @@ const CreditApplication = () => {
               variant="contained" 
               component="label"
               size="small"
-              style={{ margin: '8px 0', width: '200px' }} 
+              sx={{
+              marginTop: "1rem",
+              marginLeft: "0.5rem",
+              backgroundColor: "#215a6d",
+              "&:hover": {
+                backgroundColor: "#173d4d", 
+              },
+            }} 
             >
               Estado financiero del negocio
             <input
@@ -457,7 +595,14 @@ const CreditApplication = () => {
               variant="contained" 
               component="label"
               size="small"
-              style={{ margin: '8px 0', width: '200px' }} 
+              sx={{
+              marginTop: "1rem",
+              marginLeft: "0.5rem",
+              backgroundColor: "#215a6d",
+              "&:hover": {
+                backgroundColor: "#173d4d", 
+              },
+            }} 
             >
               Comprobante de ingresos
             <input
@@ -475,7 +620,14 @@ const CreditApplication = () => {
               variant="contained" 
               component="label"
               size="small"
-              style={{ margin: '8px 0', width: '200px' }} 
+              sx={{
+              marginTop: "1rem",
+              marginLeft: "0.5rem",
+              backgroundColor: "#215a6d",
+              "&:hover": {
+                backgroundColor: "#173d4d", 
+              },
+            }} 
             >
               Certificado de avalúo
             <input
@@ -493,7 +645,14 @@ const CreditApplication = () => {
               variant="contained" 
               component="label"
               size="small"
-              style={{ margin: '8px 0', width: '200px' }} 
+              sx={{
+              marginTop: "1rem",
+              marginLeft: "0.5rem",
+              backgroundColor: "#215a6d",
+              "&:hover": {
+                backgroundColor: "#173d4d", 
+              },
+            }} 
             >
               Plan de negocios
             <input
@@ -515,7 +674,14 @@ const CreditApplication = () => {
               variant="contained" 
               component="label"
               size="small"
-              style={{ margin: '8px 0', width: '200px' }} 
+              sx={{
+              marginTop: "1rem",
+              marginLeft: "0.5rem",
+              backgroundColor: "#215a6d",
+              "&:hover": {
+                backgroundColor: "#173d4d", 
+              },
+            }} 
             >
               Comprobante de ingresos
             <input
@@ -533,7 +699,14 @@ const CreditApplication = () => {
               variant="contained" 
               component="label"
               size="small"
-              style={{ margin: '8px 0', width: '200px' }} 
+              sx={{
+              marginTop: "1rem",
+              marginLeft: "0.5rem",
+              backgroundColor: "#215a6d",
+              "&:hover": {
+                backgroundColor: "#173d4d", 
+              },
+            }} 
             >
               Presupuesto de remodelacion
             <input
@@ -551,7 +724,14 @@ const CreditApplication = () => {
               variant="contained" 
               component="label"
               size="small"
-              style={{ margin: '8px 0', width: '200px' }} 
+              sx={{
+              marginTop: "1rem",
+              marginLeft: "0.5rem",
+              backgroundColor: "#215a6d",
+              "&:hover": {
+                backgroundColor: "#173d4d", 
+              },
+            }} 
             >
               Certificado de avalúo actualizado
             <input
@@ -572,6 +752,8 @@ const CreditApplication = () => {
   };
 
   return (
+
+    
     <Box
       display="flex"
       flexDirection="column"
@@ -579,7 +761,28 @@ const CreditApplication = () => {
       justifyContent="center"
       component="form"
     >
-      <h3> Solicitud crediticia </h3>
+      <Dialog
+        open={open}
+        onClose={handleCancel}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"¿Estás seguro?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            ¿Quieres proceder con esta acción? Si aceptas, se tomará como confirmado y no se podra editar nigun campo.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancel} color="secondary">
+            Rechazar
+          </Button>
+          <Button onClick={handleConfirm} color="primary" autoFocus>
+            Aceptar
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <h3 style={{ color:"#2d2d29" }}> Solicitud crediticia </h3>
       <form>
         <FormControl fullWidth>
           <TextField
@@ -612,7 +815,7 @@ const CreditApplication = () => {
             variant="standard"
             defaultValue="1"
             onChange={(e) => setCrediType(e.target.value)}
-            style={{ width: "25%" }}
+            style={{ marginTop: "1rem",width: "25%" }}
           >
             <MenuItem value={"1"}>Primera vivienda</MenuItem>
             <MenuItem value={"2"}>Segunda vivienda</MenuItem>
@@ -631,8 +834,10 @@ const CreditApplication = () => {
             helperText="Formato anual. Ejemplo: 20, 30, 40"
           />
         </FormControl>
-        
-        <div style={{ marginTop: 16 }}>
+        <Typography variant="h6" component="div" sx={{ color:"#2d2d29", marginTop: "0.4rem" }}>
+        Archivos PDF
+      </Typography>
+        <div >
           {renderButtons()}
         </div>
         <FormControl>
@@ -640,8 +845,15 @@ const CreditApplication = () => {
           <Button
             variant="contained"
             color="info"
-            onClick={(e) => saveCredit(e)}
-            style={{ marginLeft: "0.5rem" }}
+            onClick={(e) => handleClickOpen(e)}
+            sx={{
+              marginTop: "1rem",
+              marginLeft: "0.5rem",
+              backgroundColor: "#215a6d",
+              "&:hover": {
+                backgroundColor: "#173d4d", 
+              },
+            }}
             startIcon={<AccountBalance />}
           >
             Solicitar credito

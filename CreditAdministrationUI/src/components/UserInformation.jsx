@@ -8,20 +8,35 @@ import userService from "../services/user.service";
 
 const UserInformation = () => {
   const [creditInit] = useState(JSON.parse(sessionStorage.getItem("toEvaluate")));
+  const [userId] = useState(JSON.parse(sessionStorage.getItem("userIdInfo")));
   const [userSelected,setUserSelected] = useState(null);
+  const [userSelectedInfo,setUserSelectedInfo] = useState(null);
   const [userBalance, setUserBalance] = useState(0);
   const navigate = useNavigate();
 
   const init = () => {
-    userService
-    .getById(creditInit.creditUserId)
-    .then((response) => {
-      console.log("Usuario encontrado: ", response.data);
-      setUserSelected(response.data);
-    })
-    .catch((e) => {
-      console.log("Ha ocurrido un error al obtener el usuario" , e);
-    });
+
+    if (userId === 0 || userId === null) {
+      userService
+      .getById(creditInit.creditUserId)
+      .then((response) => {
+        console.log("Usuario encontrado: ", response.data);
+        setUserSelected(response.data);
+      })
+      .catch((e) => {
+        console.log("Ha ocurrido un error al obtener el usuario" , e);
+      });
+    } else {
+      userService
+      .getById(userId)
+      .then((response) => {
+        console.log("Usuario encontrado: ", response.data);
+        setUserSelectedInfo(response.data);
+      })
+      .catch((e) => {
+        console.log("Ha ocurrido un error al obtener el usuario" , e);
+      });
+    }
   }
 
   const editBalance = (e) => {
@@ -48,7 +63,7 @@ const UserInformation = () => {
     init();
   }, []);
 
-  if(userSelected != null){
+  if(userSelected != null && userSelectedInfo === null){
     return (
       <Box
           display="flex"
@@ -57,15 +72,15 @@ const UserInformation = () => {
           justifyContent="center"
           component="form"
         >
-          <h3> Datos del usuario </h3>
+          <h3 style={{ color:"#2d2d29" }}> Datos del usuario </h3>
           <form>
-            <p> Nombre: {userSelected.userName} </p>
-            <p> Rut: {userSelected.userRut} </p>
-            <p> Email: {userSelected.userEmail} </p>
-            <p> Edad: {userSelected.userAge} </p>
-            <p> Antiguedad de cuenta: {userSelected.userAccountSeniority} </p>
-            <p> Antiguedad laboral: {userSelected.userWorkSeniority} </p>
-            <p> Saldo: {userSelected.userBalance} </p>
+            <p style={{ color:"#2d2d29" }}> Nombre: {userSelected.userName} </p>
+            <p style={{ color:"#2d2d29" }}> Rut: {userSelected.userRut} </p>
+            <p style={{ color:"#2d2d29" }}> Email: {userSelected.userEmail} </p>
+            <p style={{ color:"#2d2d29" }}> Edad: {userSelected.userAge} </p>
+            <p style={{ color:"#2d2d29" }}> Antiguedad de cuenta: {userSelected.userAccountSeniority} </p>
+            <p style={{ color:"#2d2d29" }}> Antiguedad laboral: {userSelected.userWorkSeniority} </p>
+            <p style={{ color:"#2d2d29" }}> Saldo: {userSelected.userBalance} </p>
             <FormControl>
               <TextField
                 id="userBalance"
@@ -84,11 +99,39 @@ const UserInformation = () => {
                 variant="contained"
                 color="info"
                 onClick={(e) => editBalance(e)}
-                style={{ marginLeft: "0.5rem" }}
+                sx={{
+                  marginTop: "1rem",
+                  marginLeft: "1rem",
+                  backgroundColor: "#215a6d",
+                  "&:hover": {
+                    backgroundColor: "#173d4d", 
+                  },
+                }}
               >
                 Editar saldo
               </Button>
             </FormControl>
+          </form>
+        </Box>
+    );
+  } else if(userSelectedInfo != null){
+    return (
+      <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          component="form"
+        >
+          <h3 style={{ color:"#2d2d29" }}> Datos del usuario </h3>
+          <form>
+            <p style={{ color:"#2d2d29" }}> Nombre: {userSelectedInfo.userName} </p>
+            <p style={{ color:"#2d2d29" }}> Rut: {userSelectedInfo.userRut} </p>
+            <p style={{ color:"#2d2d29" }}> Email: {userSelectedInfo.userEmail} </p>
+            <p style={{ color:"#2d2d29" }}> Edad: {userSelectedInfo.userAge} </p>
+            <p style={{ color:"#2d2d29" }}> Antiguedad de cuenta: {userSelectedInfo.userAccountSeniority} </p>
+            <p style={{ color:"#2d2d29" }}> Antiguedad laboral: {userSelectedInfo.userWorkSeniority} </p>
+            <p style={{ color:"#2d2d29" }}> Saldo: {userSelectedInfo.userBalance} </p>
           </form>
         </Box>
     );

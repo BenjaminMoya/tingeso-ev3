@@ -13,8 +13,6 @@ const CreditSimulation = () => {
   const [year, setYear] = useState("");
   const [simulatedAmount, setSimulatedAmount] = useState("");
 
-  //const navigate = useNavigate();
-
   const calculateSimulation = (e) => {
     e.preventDefault();
 
@@ -41,6 +39,9 @@ const CreditSimulation = () => {
       setSimulatedAmount(response.data);
     })
     .catch((error) => {
+      if(error.message.includes("500") || error.message.includes("403")){
+        alert("El servidor no se encuentra disponible. Contacte a soporte tecnico");
+      }
       console.log(
         "Ha ocurrido un error al intentar calcular la simulacion del credito.",
         error
@@ -58,7 +59,7 @@ const CreditSimulation = () => {
       component="form"
     > 
       <div>
-        <h3> Simulacion de credito hipotecario</h3>
+        <h3 style={{ color:"#2d2d29" }}> Simulacion de credito hipotecario</h3>
       </div>
       <form>
         
@@ -101,7 +102,14 @@ const CreditSimulation = () => {
             variant="contained"
             color="info"
             onClick={(e) => calculateSimulation(e)}
-            style={{ marginLeft: "0.5rem" }}
+            sx={{
+              marginTop: "1rem",
+              marginLeft: "0.5rem",
+              backgroundColor: "#215a6d",
+              "&:hover": {
+                backgroundColor: "#173d4d", 
+              },
+            }}
             startIcon={<CalculateIcon />}
           >
             Simular credito

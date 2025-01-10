@@ -7,10 +7,12 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import AppRegistrationSharpIcon from '@mui/icons-material/AppRegistrationSharp';
 import creditService from "../services/credit.service";
+import Box from "@mui/material/Box";
 
 
 const CreditsList = () => {
@@ -69,11 +71,13 @@ const CreditsList = () => {
 
   return (
      <TableContainer component={Paper}>
-        <br />
-
-        <br /> <br />
+        <Typography variant="h6" component="div" sx={{ fontWeight: "bold", marginBottom: "1rem",marginTop: "1rem" }}>
+        Creditos por evaluar
+      </Typography>
         <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-            <TableHead>
+            {(credit1.length > 0 || credit2.length > 0 || credit3.length >0) && (
+              <Box>
+                <TableHead>
             <TableRow>
                 <TableCell align="left" sx={{ fontWeight: "bold" }}>
                 Id 
@@ -115,7 +119,7 @@ const CreditsList = () => {
                 <TableCell align="left">Remodelacion
                 </TableCell>
                 )}
-                <TableCell align="right">{credit.creditRequestedAmount}</TableCell>
+                <TableCell align="center">{credit.creditRequestedAmount}</TableCell>
                 <TableCell align="center">{credit.creditTerm}</TableCell>
                 <TableCell align="center">{credit.creditPhase}</TableCell>
                 <TableCell>
@@ -124,7 +128,13 @@ const CreditsList = () => {
                   color="info"
                   size="small"
                   onClick={() => goEvaluation(credit)}
-                  style={{ marginLeft: "0.5rem" }}
+                  sx={{
+                    marginLeft: "0.5rem",
+                    backgroundColor: "#215a6d",
+                    "&:hover": {
+                      backgroundColor: "#173d4d", 
+                    },
+                  }}
                   startIcon={<AppRegistrationSharpIcon />}
                 >
                   Evaluar
@@ -154,7 +164,7 @@ const CreditsList = () => {
                 <TableCell align="left">Remodelacion
                 </TableCell>
                 )}
-                <TableCell align="right">{credit.creditRequestedAmount}</TableCell>
+                <TableCell align="center">{credit.creditRequestedAmount}</TableCell>
                 <TableCell align="center">{credit.creditTerm}</TableCell>
                 <TableCell align="center">{credit.creditPhase}</TableCell>
                 <TableCell>
@@ -163,7 +173,13 @@ const CreditsList = () => {
                   color="info"
                   size="small"
                   onClick={() => goEvaluation(credit)}
-                  style={{ marginLeft: "0.5rem" }}
+                  sx={{
+                    marginLeft: "0.5rem",
+                    backgroundColor: "#215a6d",
+                    "&:hover": {
+                      backgroundColor: "#173d4d", 
+                    },
+                  }}
                   startIcon={<AppRegistrationSharpIcon />}
                 >
                   Evaluar
@@ -193,7 +209,7 @@ const CreditsList = () => {
                 <TableCell align="left">Remodelacion
                 </TableCell>
                 )}
-                <TableCell align="right">{credit.creditRequestedAmount}</TableCell>
+                <TableCell align="center">{credit.creditRequestedAmount}</TableCell>
                 <TableCell align="center">{credit.creditTerm}</TableCell>
                 <TableCell align="center">{credit.creditPhase}</TableCell>
                 <TableCell>
@@ -202,7 +218,13 @@ const CreditsList = () => {
                   color="info"
                   size="small"
                   onClick={() => goEvaluation(credit)}
-                  style={{ marginLeft: "0.5rem" }}
+                  sx={{
+                    marginLeft: "0.5rem",
+                    backgroundColor: "#215a6d",
+                    "&:hover": {
+                      backgroundColor: "#173d4d", 
+                    },
+                  }}
                   startIcon={<AppRegistrationSharpIcon />}
                 >
                   Evaluar
@@ -211,6 +233,13 @@ const CreditsList = () => {
             </TableRow>
           ))}
         </TableBody>
+              </Box>
+            )}
+        {credit1.length === 0 && credit2.length === 0 && credit3.length === 0 && (
+          <Typography variant="h6" component="div" sx={{ fontWeight: "bold", marginBottom: "1rem",marginTop: "1rem" }}>
+          No hay creditos por evaluar.
+          </Typography>
+        )}
       </Table>
     </TableContainer>
   );

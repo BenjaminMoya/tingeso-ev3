@@ -75,6 +75,9 @@ const UserLogin = () => {
             } 
           })
           .catch((error) => {
+            if(error.message.includes("500") || error.message.includes("403")){
+                alert("El servidor no se encuentra disponible. Contacte a soporte tecnico");
+            }
             console.log(
                 "Ha ocurrido un error al intentar registrar al usuario.",
                 error
@@ -132,7 +135,7 @@ const UserLogin = () => {
           component="form"
         > 
           <div>
-            <h3> Login </h3>
+            <h3 style={{ color:"#2d2d29" }}> Login </h3>
           </div>
           <form>
             
@@ -163,7 +166,14 @@ const UserLogin = () => {
                 variant="contained"
                 color="info"
                 onClick={(e) => login(e)}
-                style={{ marginLeft: "0.5rem" }}
+                sx={{
+                  marginTop: "1rem",
+                  marginLeft: "0.5rem",
+                  backgroundColor: "#215a6d",
+                  "&:hover": {
+                    backgroundColor: "#173d4d", 
+                  },
+                }}
                 startIcon={<LoginSharpIcon />}
               >
                 Login
@@ -176,7 +186,14 @@ const UserLogin = () => {
                 variant="contained"
                 color="info"
                 onClick={() => handleEdit()}
-                style={{ marginLeft: "0.5rem" }}
+                sx={{
+                  marginTop: "1rem",
+                  marginLeft: "0.5rem",
+                  backgroundColor: "#215a6d",
+                  "&:hover": {
+                    backgroundColor: "#173d4d", 
+                  },
+                }}
                 startIcon={<PersonAddAltSharpIcon />}
               >
                 Registrarse
@@ -196,7 +213,7 @@ const UserLogin = () => {
           component="form"
         > 
           <div>
-            <h3> Registro </h3>
+            <h3 style={{ color:"#2d2d29" }}> Registro </h3>
           </div>
           <form>
             
@@ -295,7 +312,14 @@ const UserLogin = () => {
                 variant="contained"
                 color="info"
                 onClick={(e) => register(e)}
-                style={{ marginLeft: "0.5rem" }}
+                sx={{
+                      marginTop: "1rem",
+                      marginLeft: "0.5rem",
+                      backgroundColor: "#215a6d",
+                      "&:hover": {
+                        backgroundColor: "#173d4d", 
+                      },
+                    }}
                 startIcon={<PersonAddAltSharpIcon />}
               >
                 Registro
@@ -308,7 +332,14 @@ const UserLogin = () => {
                 variant="contained"
                 color="info"
                 onClick={(e) => handleEdit(e)}
-                style={{ marginLeft: "0.5rem" }}
+                sx={{
+                  marginTop: "1rem",
+                  marginLeft: "0.5rem",
+                  backgroundColor: "#215a6d",
+                  "&:hover": {
+                    backgroundColor: "#173d4d", 
+                  },
+                }}
                 startIcon={<LoginSharpIcon />}
               >
                 Logeo

@@ -15,13 +15,23 @@ import CancelSharpIcon from '@mui/icons-material/CancelSharp';
 import userService from "../services/user.service";
 import creditService from "../services/credit.service";
 import Tooltip from "@mui/material/Tooltip";
+import SimCardDownloadIcon from '@mui/icons-material/SimCardDownload';
 import EventIcon from '@mui/icons-material/Event';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import InfoIcon from '@mui/icons-material/Info';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox"
 import savingCapacityService from "../services/savingCapacity.service";
 import fileService from "../services/file.service";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 
 const CreditEvaluation = () => {
 
@@ -47,7 +57,15 @@ const CreditEvaluation = () => {
   const [workSeniority,setWorkSeniority] = useState("");
   const [indepedent,setIndependent] = useState("");
   const [selectedFile1, setSelectedFile1] = useState(null);
-  const [selectedFile2, setSelectedFile2] = useState(null);
+  const [open1, setOpen1] = useState(false);
+  const [open2, setOpen2] = useState(false);
+  const [open3, setOpen3] = useState(false);
+  const [open4, setOpen4] = useState(false);
+  const [open5, setOpen5] = useState(false);
+  const [open6, setOpen6] = useState(false);
+  const [open7, setOpen7] = useState(false);
+  const [open8, setOpen8] = useState(false);
+  const [open9, setOpen9] = useState(false);
   const [cooldown, setCooldown] = useState(false);
   const today = new Date();
   const firmDate = new Date(creditFirmDate);
@@ -78,6 +96,15 @@ const CreditEvaluation = () => {
     });
   };
 
+  const isWeekend = (date) => {
+    const day = date.getDay();
+    return day === 0 || day === 6; 
+  };
+
+  const handleDateChange = (date) => {
+    setCreditFirmDate(date);
+  };
+
   useEffect(() => {
     init();
   }, []);
@@ -86,13 +113,136 @@ const CreditEvaluation = () => {
     setSelectedFile1(event.target.files[0]);
   };
 
-  const handleDateChange = (e) => {
-    const dateValue = e.target.value;
-    
-    const dateObject = new Date(dateValue);
-    setCreditFirmDate(dateObject);
+  const handleClickOpen1 = () => {
+    setOpen1(true); 
   };
 
+  const handleCancel1 = () => {
+    setOpen1(false); 
+    console.log("Acción cancelada");
+  };
+
+  const handleConfirm1 = (e) => {
+    approve(e);
+    setOpen1(false); 
+    console.log("Acción confirmada");
+  };
+
+  const handleClickOpen2 = () => {
+    setOpen2(true); 
+  };
+
+  const handleCancel2 = () => {
+    setOpen2(false); 
+    console.log("Acción cancelada");
+  };
+
+  const handleConfirm2 = (e) => {
+    reject(e);
+    setOpen2(false); 
+    console.log("Acción confirmada");
+  };
+
+  const handleClickOpen3 = () => {
+    setOpen3(true); 
+  };
+
+  const handleCancel3 = () => {
+    setOpen3(false); 
+    console.log("Acción cancelada");
+  };
+
+  const handleConfirm3 = (e) => {
+    accept(e);
+    setOpen3(false); 
+    console.log("Acción confirmada");
+  };
+
+  const handleClickOpen4 = () => {
+    setOpen4(true); 
+  };
+
+  const handleCancel4 = () => {
+    setOpen4(false); 
+    console.log("Acción cancelada");
+  };
+
+  const handleConfirm4 = (e) => {
+    cancel(e);
+    setOpen4(false); 
+    console.log("Acción confirmada");
+  };
+
+  const handleClickOpen5 = () => {
+    setOpen5(true); 
+  };
+
+  const handleCancel5 = () => {
+    setOpen5(false); 
+    console.log("Acción cancelada");
+  };
+
+  const handleClickOpen6 = () => {
+    setOpen6(true); 
+  };
+
+  const handleCancel6 = () => {
+    setOpen6(false); 
+    console.log("Acción cancelada");
+  };
+
+  const handleConfirm6 = (e) => {
+    setOpen6(false);
+    contract(e);
+    console.log("Acción confirmada");
+  };
+
+  const handleClickOpen7 = () => {
+    setOpen7(true); 
+  };
+
+  const handleCancel7 = () => {
+    setOpen7(false); 
+    console.log("Acción cancelada");
+  };
+
+  const handleConfirm7 = (e) => {
+    setOpen7(false);
+    finalAccept(e);
+    console.log("Acción confirmada");
+  };
+
+  const handleClickOpen8 = () => {
+    setOpen8(true); 
+  };
+
+  const handleCancel8 = () => {
+    setOpen8(false); 
+    console.log("Acción cancelada");
+  };
+
+  const handleConfirm8 = (e) => {
+    setOpen8(false);
+    cancel(e);
+    console.log("Acción confirmada");
+  };
+
+  const handleClickOpen9 = () => {
+    setOpen9(true); 
+  };
+
+  const handleCancel9 = () => {
+    setOpen9(false); 
+    console.log("Acción cancelada");
+  };
+
+  const handleConfirm9 = (e) => {
+    setOpen9(false);
+    transfer(e);
+    console.log("Acción confirmada");
+  };
+
+  
   const ev1 = () => {
     if(creditType == 1){
       if(creditTerm <= 30){
@@ -253,6 +403,7 @@ const CreditEvaluation = () => {
     .relation1(creditRequestedAmount,interest,creditTerm,monthlyEntry)
     .then((response) => {
       console.log("Relacion CI: ", response.data);
+      alert("Relacion CI calculada");
       setRelationCI(response.data);
     })
     .catch((error) => {
@@ -281,6 +432,7 @@ const CreditEvaluation = () => {
       .relation2(monthlyEntry,allDebts,response.data)
       .then((response) => {
         console.log("Relacion DI: ", response.data);
+        alert("Relacion DI calculada");
         setRelationDI(response.data);
       })
       .catch((error) => {
@@ -347,6 +499,7 @@ const CreditEvaluation = () => {
                 .getById(creditUserId)
                 .then((response) => {
                   console.log("Mostrando datos del usuario.", response.data);
+                  alert("Capacidad de ahorro: "+response.data.userSavingCapacity);
                   setSavingCapacity(response.data.userSavingCapacity);
                 })
                 .catch((error) => {
@@ -403,6 +556,7 @@ const CreditEvaluation = () => {
     
     if(savingCapacity == 0 || savingCapacity == -1 || interest == 0 || interest == -1 || monthlyEntry == 0 || monthlyEntry == -1 || monthlyDeposit == 0 || monthlyDeposit == -1 || allDebts == 0 || allDebts == -1 || topRetirement == 0 || topRetirement == -1 || relationCI == 0 || relationCI == -1 || relationDI == 0 || relationDI == -1){
       alert("Debe completar todas las evaluaciones");
+      return;
     }
 
     creditService
@@ -717,22 +871,68 @@ const CreditEvaluation = () => {
     });
   }
 
+  const toInfoUser = () => {
+    navigate("/user/information");
+  }
+
   if(executive && creditInit.creditPhase == 3){
     return (
       <div>
+        <Dialog
+        open={open1}
+        onClose={handleCancel1}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"¿Estás seguro?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            ¿Quieres proceder con esta acción? Si aceptas, se tomará como confirmado y no se podra revertir.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancel1} color="secondary">
+            Rechazar
+          </Button>
+          <Button onClick={handleConfirm1} color="primary" autoFocus>
+            Aceptar
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={open2}
+        onClose={handleCancel2}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"¿Estás seguro?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            ¿Quieres proceder con esta acción? Si aceptas, se rechazara y no se podra revertir.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancel2} color="secondary">
+            Rechazar
+          </Button>
+          <Button onClick={handleConfirm2} color="primary" autoFocus>
+            Aceptar
+          </Button>
+        </DialogActions>
+      </Dialog>
         <br />
         <div>
           <Box display="flex" alignItems="row" mb={1}>
             <CheckCircleOutlineSharpIcon style={{ color: 'green', marginRight: 8 }} />
-            <Typography>Cumple con el requisito</Typography>
+            <Typography style={{ color:"#2d2d29" }}>Cumple con el requisito</Typography>
           </Box>
           <Box display="flex" alignItems="row" mb={1}>
             <RemoveRedEyeSharpIcon style={{ color: 'yellow', marginRight: 8 }} />
-            <Typography>Requiere criterio del ejecutivo</Typography>
+            <Typography style={{ color:"#2d2d29" }}>Requiere criterio del ejecutivo</Typography>
           </Box>
           <Box display="flex" alignItems="row">
             <CancelSharpIcon style={{ color: 'red', marginRight: 8 }} />
-            <Typography>No cumple con el requisito</Typography>
+            <Typography style={{ color:"#2d2d29" }}>No cumple con el requisito</Typography>
           </Box>
         </div>
         <Box
@@ -742,90 +942,116 @@ const CreditEvaluation = () => {
           justifyContent="center"
           component="form"
         >
-          <h3> Datos del credito </h3>
+          <h3 style={{ color:"#2d2d29" }}> Datos del credito </h3>
           <form>
-            <Link to="/user/information">Informacion del usuario</Link>
+          <Button
+                variant="contained"
+                color="info"
+                onClick={() => toInfoUser()}
+                sx={{
+                  marginLeft: "0.5rem",
+                  backgroundColor: "#215a6d",
+                  "&:hover": {
+                    backgroundColor: "#173d4d", 
+                  },
+                }}
+                startIcon={<InfoIcon />}
+              >
+                Informacion del usuario
+              </Button>
+              <Button
+                variant="contained"
+                color="info"
+                onClick={(e) => download(e)}
+                sx={{
+                  marginLeft: "0.5rem",
+                  backgroundColor: "#215a6d",
+                  "&:hover": {
+                    backgroundColor: "#173d4d", 
+                  },
+                }}
+                startIcon={<CloudDownloadIcon />}
+              >
+                Descarga de archivos
+              </Button>
             {creditType== 1 && (
-              <p> Tipo de credito: Primera vivienda </p>
+              <p style={{ color:"#2d2d29" }}> Tipo de credito: Primera vivienda </p>
             )}
             {creditType== 2 && (
-              <p> Tipo de credito: Segunda vivienda </p>
+              <p style={{ color:"#2d2d29" }}> Tipo de credito: Segunda vivienda </p>
             )}
             {creditType== 3 && (
-              <p> Tipo de credito: Propiedad comercial </p>
+              <p style={{ color:"#2d2d29" }}> Tipo de credito: Propiedad comercial </p>
             )}
             {creditType== 4 && (
-              <p> Tipo de credito: Remodelacion </p>
+              <p style={{ color:"#2d2d29" }}> Tipo de credito: Remodelacion </p>
             )}
-            <p 
-            style={{ textDecoration: 'underline' }}
-            onClick={(e) => download(e)} >Descargar archivos</p>
-            <p> {ev1()} </p>
-            <p> {ev2()} </p>
+            <p style={{ color:"#2d2d29" }}> {ev1()} </p>
+            <p style={{ color:"#2d2d29" }}> {ev2()} </p>
             { ev5() && (
               <Box display="flex" alignItems="row" mb={1}>
                 <CheckCircleOutlineSharpIcon style={{ color: 'green', marginRight: 8 }} />
-                <Typography>Termina de pagar antes de los 75 años de edad o menos </Typography>
+                <Typography style={{ color:"#2d2d29" }}>Termina de pagar antes de los 75 años de edad o menos </Typography>
               </Box>
             )}
             { !ev5() && (
               <Box display="flex" alignItems="row" mb={1}>
                 <CancelSharpIcon style={{ color: 'red', marginRight: 8 }} />
-                <Typography>El pago del credito se extiende a mas de 75 años de edad</Typography>
+                <Typography style={{ color:"#2d2d29" }}>El pago del credito se extiende a mas de 75 años de edad</Typography>
               </Box>
             )}
             {relationCI != 0 && (
               <Box display="flex" alignItems="row" mb={1}>
                 <CheckCircleOutlineSharpIcon style={{ color: 'green', marginRight: 8 }} />
-                <Typography>Relacion CI menor a 35 %</Typography>
+                <Typography style={{ color:"#2d2d29" }}>Relacion CI menor a 35 %</Typography>
               </Box>
             )}
             { relationCI == 0 && (
               <Box display="flex" alignItems="row" mb={1}>
                 <CancelSharpIcon style={{ color: 'red', marginRight: 8 }} />
-                <Typography>Relacion CI mayor a 35%</Typography>
+                <Typography style={{ color:"#2d2d29" }}>Relacion CI mayor a 35%</Typography>
               </Box>
             )}
             { indepedent && (
               <Box display="flex" alignItems="row" mb={1}>
                 <RemoveRedEyeSharpIcon style={{ color: 'yellow', marginRight: 8 }} />
-                <Typography>Independiente: Requiere revisar ingresos de los ultimos 2 años</Typography>
+                <Typography style={{ color:"#2d2d29" }}>Independiente: Requiere revisar ingresos de los ultimos 2 años</Typography>
               </Box>
             )}
             { !indepedent && workSeniority >= 1 && (
               <Box display="flex" alignItems="row" mb={1}>
                 <CheckCircleOutlineSharpIcon style={{ color: 'green', marginRight: 8 }} />
-                <Typography>Mas de 1 año de antiguedad laboral</Typography>
+                <Typography style={{ color:"#2d2d29" }}>Mas de 1 año de antiguedad laboral</Typography>
               </Box>
             )}
             { relationDI != 0 && (
               <Box display="flex" alignItems="row" mb={1}>
                 <CheckCircleOutlineSharpIcon style={{ color: 'green', marginRight: 8 }} />
-                <Typography>Relacion DI: Deudas menores que el 50% del ingreso mensual</Typography>
+                <Typography style={{ color:"#2d2d29" }}>Relacion DI: Deudas menores que el 50% del ingreso mensual</Typography>
               </Box>
             )}
             { relationDI == 0 && (
               <Box display="flex" alignItems="row" mb={1}>
                 <CancelSharpIcon style={{ color: 'red', marginRight: 8 }} />
-                <Typography>Relacion DI: Deudas mayores que el 50% del ingreso mensual</Typography>
+                <Typography style={{ color:"#2d2d29" }}>Relacion DI: Deudas mayores que el 50% del ingreso mensual</Typography>
               </Box>
             )}
             { savingCapacity == 5 && (
               <Box display="flex" alignItems="row" mb={1}>
                 <CheckCircleOutlineSharpIcon style={{ color: 'green', marginRight: 8 }} />
-                <Typography>Capacidad de ahorro: Aprobada</Typography>
+                <Typography style={{ color:"#2d2d29" }}>Capacidad de ahorro: Aprobada</Typography>
               </Box>
             )}
             { (savingCapacity == 3 || savingCapacity == 4) && (
               <Box display="flex" alignItems="row" mb={1}>
                 <RemoveRedEyeSharpIcon style={{ color: 'yellow', marginRight: 8 }} />
-                <Typography>Capacidad de ahorro: Moderada</Typography>
+                <Typography style={{ color:"#2d2d29" }}>Capacidad de ahorro: Moderada</Typography>
               </Box>
             )}
             { savingCapacity < 3  && (
               <Box display="flex" alignItems="row" mb={1}>
                 <CancelSharpIcon style={{ color: 'red', marginRight: 8 }} />
-                <Typography>Capacidad de ahorro: Rechazada</Typography>
+                <Typography style={{ color:"#2d2d29" }}>Capacidad de ahorro: Rechazada</Typography>
               </Box>
             )} 
             <FormControl fullWidth>
@@ -840,7 +1066,7 @@ const CreditEvaluation = () => {
             />
             </FormControl>
 
-            <h3> Caracteristicas del cliente  </h3>
+            <h3 style={{ color:"#2d2d29" }}> Caracteristicas del cliente  </h3>
 
             <FormControl fullWidth>
             <TextField
@@ -927,7 +1153,13 @@ const CreditEvaluation = () => {
                 variant="contained"
                 color="info"
                 onClick={(e) => ev3(e)}
-                style={{ marginLeft: "0.5rem" }}
+                sx={{
+                  marginLeft: "0.5rem",
+                  backgroundColor: "#215a6d",
+                  "&:hover": {
+                    backgroundColor: "#173d4d", 
+                  },
+                }}
                 startIcon={<CalculateIcon />}
               >
                 Calcular CI
@@ -941,7 +1173,13 @@ const CreditEvaluation = () => {
                 variant="contained"
                 color="info"
                 onClick={(e) => ev4(e)}
-                style={{ marginLeft: "0.5rem" }}
+                sx={{
+                  marginLeft: "0.5rem",
+                  backgroundColor: "#215a6d",
+                  "&:hover": {
+                    backgroundColor: "#173d4d", 
+                  },
+                }}
                 startIcon={<CalculateIcon />}
               >
                 Calcular DI
@@ -954,7 +1192,13 @@ const CreditEvaluation = () => {
                 variant="contained"
                 color="info"
                 onClick={(e) => ev6(e)}
-                style={{ marginLeft: "0.5rem" }}
+                sx={{
+                  marginLeft: "0.5rem",
+                  backgroundColor: "#215a6d",
+                  "&:hover": {
+                    backgroundColor: "#173d4d", 
+                  },
+                }}
                 startIcon={<SavingsSharpIcon />}
               >
                 Evaluar capacidad de ahorro
@@ -962,7 +1206,7 @@ const CreditEvaluation = () => {
     
             </FormControl>
 
-            <h3> Razones crediticias </h3>
+            <h3 > Razones crediticias </h3>
 
             <FormControl fullWidth>
             <TextField
@@ -989,8 +1233,14 @@ const CreditEvaluation = () => {
               <Button
                 variant="contained"
                 color="info"
-                onClick={(e) => approve(e)}
-                style={{ marginLeft: "0.5rem" }}
+                onClick={(e) => handleClickOpen1(e)}
+                sx={{
+                  marginLeft: "0.5rem",
+                  backgroundColor: "#215a6d",
+                  "&:hover": {
+                    backgroundColor: "#173d4d", 
+                  },
+                }}
                 startIcon={<DoneAllSharpIcon />}
               >
                 Aprobar
@@ -1001,8 +1251,14 @@ const CreditEvaluation = () => {
               <Button
                 variant="contained"
                 color="info"
-                onClick={(e) => reject(e)}
-                style={{ marginLeft: "0.5rem" }}
+                onClick={(e) => handleClickOpen2(e)}
+                sx={{
+                  marginLeft: "0.5rem",
+                  backgroundColor: "#215a6d",
+                  "&:hover": {
+                    backgroundColor: "#173d4d", 
+                  },
+                }}
                 startIcon={<CloseSharpIcon />}
               >
                 Rechazar
@@ -1011,7 +1267,7 @@ const CreditEvaluation = () => {
             </form>
           </Box>
           <br />
-            <Link to="/credit/list">Back to List</Link>
+          <Link to="/user/credits" className="link">Volver a la lista</Link>
       </div>
     );
 
@@ -1025,45 +1281,95 @@ const CreditEvaluation = () => {
         justifyContent="center"
         component="form"
       >
-        <h3> Datos del credito </h3>
+        <h3 style={{ color:"#2d2d29" }}> Datos del credito </h3>
         <form>
-          <p> Monto solicitado: ${creditRequestedAmount} (CLP) </p>
-          <p> Plazo: {creditTerm} </p>
+          <p style={{ color:"#2d2d29" }}> Monto solicitado: ${creditRequestedAmount} (CLP) </p>
+          <p style={{ color:"#2d2d29" }}> Plazo: {creditTerm} </p>
           {creditType== 1 && (
-            <p> Tipo de credito: Primera vivienda </p>
+            <p style={{ color:"#2d2d29" }}> Tipo de credito: Primera vivienda </p>
           )}
           {creditType== 2 && (
-            <p> Tipo de credito: Segunda vivienda </p>
+            <p style={{ color:"#2d2d29" }}> Tipo de credito: Segunda vivienda </p>
           )}
           {creditType== 3 && (
-            <p> Tipo de credito: Propiedad comercial </p>
+            <p style={{ color:"#2d2d29" }}> Tipo de credito: Propiedad comercial </p>
           )}
           {creditType== 4 && (
-            <p> Tipo de credito: Remodelacion </p>
+            <p style={{ color:"#2d2d29" }}> Tipo de credito: Remodelacion </p>
           )}
           
-          <p>Etapa: Preparacion de documentacion </p>
-
+          <p style={{ color:"#2d2d29" }}>Etapa: Preparacion de documentacion </p>
+          
+          <Dialog
+        open={open5}
+        onClose={handleCancel5}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title" style={{ marginLeft: "4rem" }}>{"Agenda firma de contrato"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description" style={{ marginLeft: "3rem" }}>
+            Selecciona una fecha para agendar.
+          </DialogContentText>
           <FormControl fullWidth>
-            <p>Programacion firma</p>
-              <input
-                type="date"
-                min={today}
-                onChange={handleDateChange}
-              />
-          </FormControl>
-          <p>Fecha seleccionada: {creditFirmDate ? formatDate: 'Ninguna'}</p>
-  
+        <Calendar
+          onChange={handleDateChange}
+          value={creditFirmDate}
+          minDate={today}
+          tileDisabled={({ date }) => isWeekend(date)}
+          style={{ alignItems: "center" }}
+        />
+      </FormControl>
+      <p style={{ color: "#2d2d29" }}>
+        Fecha seleccionada:{" "}
+        {creditFirmDate
+          ? creditFirmDate.toLocaleDateString("es-ES", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })
+          : "Ninguna"}
+      </p>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancel5} color="secondary">
+            Cerrar
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Button
+              variant="contained"
+              color="info"
+              onClick={(e) => handleClickOpen5(e)}
+              sx={{
+                  marginLeft: "0.5rem",
+                  marginBottom: "0.5rem",
+                  backgroundColor: "#215a6d",
+                  "&:hover": {
+                    backgroundColor: "#173d4d", 
+                  },
+                }}
+              startIcon={<HistoryEduIcon />}
+            >
+              Asignar Fecha de Firma
+            </Button>
           <br />
+          <Typography variant="h6" component="div" sx={{ color:"#2d2d29", marginTop: "0.4rem" }}>
+        Archivo PDF
+      </Typography>
           <FormControl fullWidth style={{ marginTop: 16 }}>
-          {selectedFile1 && (
-              <p>Archivo seleccionado: {selectedFile1.name}</p>
-          )}
             <Button 
               variant="contained" 
               component="label"
               size="small"
-              style={{ margin: '8px 0', width: '200px' }} 
+              sx={{
+                marginLeft: "0.5rem",
+                marginBottom: "0.5rem",
+                backgroundColor: "#215a6d",
+                "&:hover": {
+                  backgroundColor: "#173d4d", 
+                },
+              }}
               alignItems="center"
             >
               Contrato crediticio 
@@ -1074,15 +1380,46 @@ const CreditEvaluation = () => {
               onChange={handleFileChange1}
             />
             </Button>
+            {selectedFile1 && (
+              <p>Archivo seleccionado: {selectedFile1.name}</p>
+          )}
           </FormControl>
+          <Dialog
+        open={open6}
+        onClose={handleCancel6}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"¿Estás seguro?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            ¿Quieres proceder con esta acción? Si aceptas, se confirmara la fecha y no se podra revertir.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancel6} color="secondary">
+            Rechazar
+          </Button>
+          <Button onClick={handleConfirm6} color="primary" autoFocus>
+            Aceptar
+          </Button>
+        </DialogActions>
+      </Dialog>
           <FormControl>
             <br />
   
             <Button
               variant="contained"
               color="info"
-              onClick={(e) => contract(e)}
-              style={{ marginLeft: "0.5rem" }}
+              onClick={(e) => handleClickOpen6(e)}
+              sx={{
+                  marginLeft: "0.5rem",
+                  marginBottom: "0.5rem",
+                  backgroundColor: "#215a6d",
+                  "&:hover": {
+                    backgroundColor: "#173d4d", 
+                  },
+                }}
               startIcon={<HistoryEduIcon />}
             >
               Enviar contrato
@@ -1090,7 +1427,7 @@ const CreditEvaluation = () => {
           </FormControl>
         </form>
         <br />
-        <Link to="/credit/list">Volver a la lista</Link>
+        <Link to="/user/credits" className="link">Volver a la lista</Link>
       </Box>
     );
 
@@ -1104,39 +1441,105 @@ const CreditEvaluation = () => {
         justifyContent="center"
         component="form"
       >
-        <h3> Datos del credito </h3>
+        <h3 style={{ color: "#2d2d29" }}> Datos del credito </h3>
         <form>
-          <p> Monto solicitado: ${creditRequestedAmount} (CLP) </p>
-          <p> Plazo: {creditTerm} </p>
-          <p> Etapa: Lista para desembolso </p>
-          <p> Fecha de firma: {creditInit.creditFirmDate} </p>
-          <p 
-            style={{ textDecoration: 'underline' }}
-            onClick={(e) => downloadContract(e)} >Descargar contrato</p>
-  
+          <p style={{ color: "#2d2d29" }}> Monto solicitado: ${creditRequestedAmount} (CLP) </p>
+          <p style={{ color: "#2d2d29" }}> Plazo: {creditTerm} </p>
+          <p style={{ color: "#2d2d29" }}> Etapa: Lista para desembolso </p>
+          <p style={{ color: "#2d2d29" }}> Fecha de firma: {creditInit.creditFirmDate} </p>
+          <Button
+              variant="contained"
+              color="info"
+              onClick={(e) => downloadContract(e)}
+              sx={{
+                  marginLeft: "0.5rem",
+                  marginBottom: "0.5rem",
+                  backgroundColor: "#215a6d",
+                  "&:hover": {
+                    backgroundColor: "#173d4d", 
+                  },
+                }}
+                startIcon={<SimCardDownloadIcon/>}
+            >
+              Descarga de contrato
+            </Button>
           <br />
-          
+          <Dialog
+        open={open7}
+        onClose={handleCancel7}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"¿Estás seguro?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            ¿Quieres proceder con esta acción? Si aceptas, se confirmara la fecha y no se podra revertir.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancel7} color="secondary">
+            Rechazar
+          </Button>
+          <Button onClick={handleConfirm7} color="primary" autoFocus>
+            Aceptar
+          </Button>
+        </DialogActions>
+      </Dialog>
           <FormControl>
             <br />
   
             <Button
               variant="contained"
               color="info"
-              onClick={(e) => finalAccept(e)}
-              style={{ marginLeft: "0.5rem" }}
+              onClick={(e) => handleClickOpen7(e)}
+              sx={{
+                  marginLeft: "0.5rem",
+                  backgroundColor: "#215a6d",
+                  "&:hover": {
+                    backgroundColor: "#173d4d", 
+                  },
+                }}
               startIcon={<EventIcon />}
             >
               Aceptar fecha
             </Button>
           </FormControl>
+          <Dialog
+        open={open8}
+        onClose={handleCancel8}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"¿Estás seguro?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            ¿Quieres proceder con esta acción? Si aceptas, se rechazara y no se podra revertir.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancel8} color="secondary">
+            Rechazar
+          </Button>
+          <Button onClick={handleConfirm8} color="primary" autoFocus>
+            Aceptar
+          </Button>
+        </DialogActions>
+      </Dialog>
           <FormControl>
             <br />
   
             <Button
               variant="contained"
               color="info"
-              onClick={(e) => cancel(e)}
-              style={{ marginLeft: "0.5rem" }}
+              onClick={(e) => handleClickOpen8(e)}
+              sx={{
+                  marginLeft: "0.5rem",
+                  marginBottom: "0.5rem",
+                  backgroundColor: "#215a6d",
+                  "&:hover": {
+                    backgroundColor: "#173d4d", 
+                  },
+                }}
               startIcon={<CloseSharpIcon />}
             >
               Cancelar Solicitud
@@ -1144,7 +1547,7 @@ const CreditEvaluation = () => {
           </FormControl>
         </form>
         <br />
-        <Link to="/credit/list">Volver a la lista</Link>
+        <Link to="/user/credits" className="link">Volver a la lista</Link>
       </Box>
     );
 
@@ -1158,22 +1561,50 @@ const CreditEvaluation = () => {
         justifyContent="center"
         component="form"
       >
-        <h3> Datos del credito </h3>
+        <h3 style={{ color: "#2d2d29" }}> Datos del credito </h3>
         <form>
-          <p> Monto solicitado: ${creditRequestedAmount} (CLP) </p>
-          <p> Plazo: {creditTerm} </p>
-          <p> Etapa: En desembolso </p>
+          <p style={{ color: "#2d2d29" }}> Monto solicitado: ${creditRequestedAmount} (CLP) </p>
+          <p style={{ color: "#2d2d29" }}> Plazo: {creditTerm} </p>
+          <p style={{ color: "#2d2d29" }}> Etapa: En desembolso </p>
   
           <br />
           
           <FormControl>
             <br />
-  
+
+            <Dialog
+        open={open9}
+        onClose={handleCancel9}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"¿Estás seguro?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            ¿Quieres proceder con esta acción? Si aceptas, se transferiran los fondos y no se podra revertir.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancel9} color="secondary">
+            Rechazar
+          </Button>
+          <Button onClick={handleConfirm9} color="primary" autoFocus>
+            Aceptar
+          </Button>
+        </DialogActions>
+      </Dialog>
             <Button
               variant="contained"
               color="info"
-              onClick={(e) => transfer(e)}
-              style={{ marginLeft: "0.5rem" }}
+              onClick={(e) => handleClickOpen9(e)}
+              sx={{
+                  marginLeft: "0.5rem",
+                  marginBottom: "0.5rem", 
+                  backgroundColor: "#215a6d",
+                  "&:hover": {
+                    backgroundColor: "#173d4d", 
+                  },
+                }}
               startIcon={<AccountBalanceWalletIcon />}
             >
               Transferir fondos
@@ -1181,7 +1612,7 @@ const CreditEvaluation = () => {
           </FormControl>
         </form>
         <br />
-        <Link to="/credit/list">Volver a la lista</Link>
+        <Link to="/user/credits" className="link">Volver a la lista</Link>
       </Box>
     );
   } else if(!executive && creditInit.creditPhase == 0){ 
@@ -1194,15 +1625,15 @@ const CreditEvaluation = () => {
         justifyContent="center"
         component="form"
       >
-        <h3> Datos del credito </h3>
+        <h3 style={{ color: "#2d2d29" }}> Datos del credito </h3>
         <form>
-          <p> Monto solicitado: ${creditRequestedAmount} (CLP) </p>
-          <p> Plazo: {creditTerm} años</p>
-          <p> Etapa: Transferida </p>
+          <p style={{ color: "#2d2d29" }}> Monto solicitado: ${creditRequestedAmount} (CLP) </p>
+          <p style={{ color: "#2d2d29" }}> Plazo: {creditTerm} años</p>
+          <p style={{ color: "#2d2d29" }}> Etapa: Transferida </p>
   
         </form>
         <br />
-        <Link to="/user/credits">Volver a la lista</Link>
+        <Link to="/user/credits" className="link">Volver a la lista</Link>
       </Box>
     ); 
   } else {
@@ -1214,33 +1645,76 @@ const CreditEvaluation = () => {
         alignItems="center"
         justifyContent="center"
         component="form"
+        style={{ color:"#2d2d29" }}
       >
-        <h3> Datos del credito </h3>
+        <Dialog
+        open={open3}
+        onClose={handleCancel3}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"¿Estás seguro?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            ¿Quieres proceder con esta acción? Si aceptas, se tomará como confirmado y no se podra revertir.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancel3} color="secondary">
+            Rechazar
+          </Button>
+          <Button onClick={handleConfirm3} color="primary" autoFocus>
+            Aceptar
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={open4}
+        onClose={handleCancel4}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"¿Estás seguro?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            ¿Quieres proceder con esta acción? Si aceptas, se tomará como rechazado y no se podra revertir.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancel4} color="secondary">
+            Rechazar
+          </Button>
+          <Button onClick={handleConfirm4} color="primary" autoFocus>
+            Aceptar
+          </Button>
+        </DialogActions>
+      </Dialog>
+        <h3 style={{ color: "#2d2d29" }}> Datos del credito </h3>
         <form>
-          <p> Monto solicitado: ${creditRequestedAmount} (CLP) </p>
-          <p> Plazo: {creditTerm} </p>
+          <p style={{ color: "#2d2d29" }}> Monto solicitado: ${creditRequestedAmount} (CLP) </p>
+          <p style={{ color: "#2d2d29" }}> Plazo: {creditTerm} </p>
           {creditType== 1 && (
-            <p> Tipo de credito: Primera vivienda </p>
+            <p style={{ color: "#2d2d29" }}> Tipo de credito: Primera vivienda </p>
           )}
           {creditType== 2 && (
-            <p> Tipo de credito: Segunda vivienda </p>
+            <p style={{ color: "#2d2d29" }}> Tipo de credito: Segunda vivienda </p>
           )}
           {creditType== 3 && (
-            <p> Tipo de credito: Propiedad comercial </p>
+            <p style={{ color: "#2d2d29" }}> Tipo de credito: Propiedad comercial </p>
           )}
           {creditType== 4 && (
-            <p> Tipo de credito: Remodelacion </p>
+            <p style={{ color: "#2d2d29" }}> Tipo de credito: Remodelacion </p>
           )}
           {creditInit.creditPhase == 3 && (
-            <p>Etapa: En evaluacion </p>
+            <p style={{ color: "#2d2d29" }}>Etapa: En evaluacion </p>
           )}
           {creditInit.creditPhase == 4 && (
             <div>
-              <p>Etapa: Pre-aprobada </p>
-              <p>Cargo administrativo: ${creditInit.creditRequestedAmount*0.01} (CLP)</p>
-              <p>Propuesta de cuota mensual: ${creditInit.creditProposedAmount} (CLP)</p>
+              <p style={{ color: "#2d2d29" }}>Etapa: Pre-aprobada </p>
+              <p style={{ color: "#2d2d29" }}>Cargo administrativo: ${creditInit.creditRequestedAmount*0.01} (CLP)</p>
+              <p style={{ color: "#2d2d29" }}>Propuesta de cuota mensual: ${creditInit.creditProposedAmount} (CLP)</p>
               <Tooltip title="Total de cuotas mensuales en conjunto del cargo administrativo" arrow>
-                <p>Propuesta de monto final: ${(creditInit.creditProposedAmount*12*creditInit.creditTerm)+creditInit.creditRequestedAmount*0.01} (CLP)</p>
+                <p style={{ color: "#2d2d29" }}>Propuesta de monto final: ${(creditInit.creditProposedAmount*12*creditInit.creditTerm)+creditInit.creditRequestedAmount*0.01} (CLP)</p>
               </Tooltip>
               <FormControl>
                 <br />
@@ -1248,8 +1722,14 @@ const CreditEvaluation = () => {
                 <Button
                   variant="contained"
                   color="info"
-                  onClick={(e) => accept(e)}
-                  style={{ marginLeft: "0.5rem" }}
+                  onClick={(e) => handleClickOpen3(e)}
+                  sx={{
+                  marginLeft: "0.5rem",
+                  backgroundColor: "#215a6d",
+                  "&:hover": {
+                    backgroundColor: "#173d4d", 
+                  },
+                }}
                   startIcon={<DoneAllSharpIcon />}
                 >
                   Aceptar propuesta
@@ -1261,8 +1741,14 @@ const CreditEvaluation = () => {
                 <Button
                   variant="contained"
                   color="info"
-                  onClick={(e) => cancel(e)}
-                  style={{ marginLeft: "0.5rem" }}
+                  onClick={(e) => handleClickOpen4(e)}
+                  sx={{
+                  marginLeft: "0.5rem",
+                  backgroundColor: "#215a6d",
+                  "&:hover": {
+                    backgroundColor: "#173d4d", 
+                  },
+                }}
                   startIcon={<CloseSharpIcon />}
                 >
                 Rechazar propuesta 
@@ -1271,15 +1757,15 @@ const CreditEvaluation = () => {
             </div>
           )}
           {creditInit.creditPhase == 5 && (
-            <p>Etapa: Preparacion de documentacion </p>
+            <p style={{ color: "#2d2d29" }}>Etapa: Preparacion de documentacion </p>
           )}
           {creditInit.creditPhase == 6 && (
-            <p>Etapa: Lista para desembolso</p>
+            <p style={{ color: "#2d2d29" }}>Etapa: Lista para desembolso</p>
           )}
           {creditInit.creditPhase == 7 && (
             <div>
-              <p>Etapa: Rechazada </p>
-              <p>Indicaciones: </p>
+              <p style={{ color: "#2d2d29" }}>Etapa: Rechazada </p>
+              <p style={{ color: "#2d2d29" }}>Indicaciones: </p>
               <Box display="flex" alignItems="row" mb={1}>
                 <Typography>{creditReason}</Typography>
               </Box>
@@ -1290,7 +1776,13 @@ const CreditEvaluation = () => {
                   variant="contained"
                   color="info"
                   onClick={(e) => cancel(e)}
-                  style={{ marginLeft: "0.5rem" }}
+                  sx={{
+                  marginLeft: "0.5rem",
+                  backgroundColor: "#215a6d",
+                  "&:hover": {
+                    backgroundColor: "#173d4d", 
+                  },
+                }}
                   startIcon={<CloseSharpIcon />}
                 >
                 Cancelar Solicitud
@@ -1300,12 +1792,12 @@ const CreditEvaluation = () => {
             
           )}
           {creditInit.creditPhase == 9 && (
-            <p>Etapa: En desembolso </p>
+            <p style={{ color: "#2d2d29" }} >Etapa: En desembolso </p>
           )}
           <br />
         </form>
         <br />
-        <Link to="/user/credits">Volver a la lista</Link>
+        <Link to="/user/credits" className="link">Volver a la lista</Link>
       </Box>
     );
   }

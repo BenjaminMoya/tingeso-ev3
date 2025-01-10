@@ -28,9 +28,7 @@ export default function Sidemenu({ open, toggleDrawer }) {
     .getById(userId)
     .then((response) => {
       setExecutive(response.data.executive);
-      if(userId){
-        setLogged(true);
-      }
+      setLogged(true);
     })
     .catch((error) => {
       console.log(
@@ -56,7 +54,6 @@ export default function Sidemenu({ open, toggleDrawer }) {
           </ListItemIcon>
           <ListItemText primary="Home" />
         </ListItemButton>
-
         <Divider />
 
         <ListItemButton onClick={() => navigate("/credit/simulation")}>

@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Sidemenu from "./Sidemenu";
 import { useState, useEffect } from "react";
 
@@ -35,49 +36,72 @@ export default function Navbar() {
   };
 
   const unlog = () => {
-    sessionStorage.setItem("userId", JSON.stringify(0));
+    sessionStorage.removeItem("userId");
     setLogged(false);
     navigate("/home");
+    window.location.reload();
+  }
+
+  const toAccount = () => {
+    sessionStorage.setItem("userIdInfo", JSON.stringify(JSON.parse(sessionStorage.getItem("userId"))));
+    navigate("/user/information");
   }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-            onClick={toggleDrawer(true)}
-          >
-            <MenuIcon />
-          </IconButton>
+  <AppBar position="fixed" sx={{ backgroundColor: "#215a6d" }}> 
+    <Toolbar>
+      <IconButton
+        size="large"
+        edge="start"
+        color="inherit"
+        aria-label="menu"
+        sx={{ mr: 2 }}
+        onClick={toggleDrawer(true)}
+      >
+        <MenuIcon />
+      </IconButton>
 
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          PrestaBanco
-          </Typography>
-          {!logged && (
-            <Button 
-              color="inherit"
-              onClick={() => login()}
-            >
-              Login
-            </Button>
-          )}
-          {logged && (
-            <Button 
-              color="inherit"
-              onClick={() => unlog()}
-            >
-              Cerrar sesion
-            </Button>
-          )}    
-        </Toolbar>
-      </AppBar>
+      <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        PrestaBanco
+      </Typography>
 
-      <Sidemenu open={open} toggleDrawer={toggleDrawer}></Sidemenu>
+      {!logged && (
+        <Button 
+          color="inherit"
+          onClick={() => login()}
+        >
+          Login
+        </Button>
+      )}
+      {logged && (
+      <Box>
+        <Button 
+      color="inherit"
+      onClick={() => toAccount()}
+      startIcon={<AccountCircleIcon/>}
+    >
+      Perfil
+    </Button>
     </Box>
+      
+    )}
+      {logged && (
+      
+        <Button 
+          color="inherit"
+          onClick={() => unlog()}
+        >
+          Cerrar sesión
+        </Button>
+      )}
+    </Toolbar>
+  </AppBar>
+
+  <Toolbar /> 
+  
+  <Sidemenu open={open} toggleDrawer={toggleDrawer}></Sidemenu>
+</Box>
+
   );
 }
